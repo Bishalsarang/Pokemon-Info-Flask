@@ -2,11 +2,11 @@
  "pokemons":{
    "bulbasaur":{
 	  "description": "Bulbasaur can be seen napping in bright sunlight. There is a seed on its back. By soaking up the sun's rays, the seed grows progressively larger.",
-	"info": {
+	  "info": {
 		"height": "2'04''",
 		"category": "seed",
 		"weight": "15.2lbs",
-		"abilities": "overgrow",
+		"abilities": ["overgrow"],
 		"type": ["grass", "poison"],
 		"weakness": ["fire", "flying","ice", "psychic"]
 	}

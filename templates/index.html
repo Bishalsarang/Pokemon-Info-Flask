@@ -1,45 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Pokemon Info</title>
+{% extends "base.html"%}
+{% block content %}
+<h1> Welcome to Pokedox.</h1>
+<p> Here you can find the information about the pokemons, add and edit the information</p>
 
-</head>
-<body>
-    <div>
-        <h1>{{pokemon_name.upper()}} </h1>
-        <img src="https://assets.pokemon.com/assets/cms2/img/pokedex/full/001.png"/>
-        <article>{{pokemon_description}}</article>
-         <div id="#info">
-
-            <!--Type-->
-            <h2>Type</h2>
-            <ul>
-                {% for type in pokemon_type%}
-                    <li>{{type.title()}}</li>
-                {% endfor %}
-            </ul>
-             <!---->
-
-             <!--Abilities -->
-             <h2> Abilities</h2>
-             <ul>
-                 {% for ability in pokemon_abilities%}
-                    <li>{{ability}}</li>
-                 {% endfor %}
-             </ul>
-            <!---->
-
-             <!--Weakness -->
-             <h2> Weakness</h2>
-             <ul>
-                 {% for weakness in pokemon_weakness%}
-                    <li>{{weakness}}</li>
-                {% endfor %}
-             </ul>
-            <!---->
-        </div>
-
-    </div>
-</body>
-</html>
+{% endblock %}

@@ -1,0 +1,63 @@
+{% extends "base.html"%}
+
+{% block content %}
+    <div class="content">
+        <h1 class="title">{{pokemon_name.upper()}} </h1>
+        <img src="https://assets.pokemon.com/assets/cms2/img/pokedex/full/001.png"/>
+        <article>{{pokemon_description}}</article>
+         <div id="#info">
+
+             <div class="attributes">
+            <ul>
+              <li>
+                <span class="attribute-title">Height</span>
+                <span class="attribute-value">{{height}}</span>
+              </li>
+
+              <li>
+                <span class="attribute-title">Weight</span>
+                <span class="attribute-value">{{weight}}</span>
+              </li>
+
+              <li>
+                <span class="attribute-title">Gender</span>
+
+                <span class="attribute-value">
+    <i class="icon icon_male_symbol"></i>
+    <i class="icon icon_female_symbol"></i>
+                </span>
+
+              </li>
+            </ul>
+          </div>
+            <!--Type-->
+            <h2>Type</h2>
+            <ul>
+                {% for type in pokemon_type%}
+                    <li>{{type.title()}}</li>
+                {% endfor %}
+            </ul>
+             <!---->
+
+
+             <!--Abilities -->
+             <h2> Abilities</h2>
+             <ul>
+                 {% for ability in pokemon_abilities%}
+                    <li>{{ability}}</li>
+                 {% endfor %}
+             </ul>
+            <!---->
+
+             <!--Weakness -->
+             <h2> Weakness</h2>
+             <ul>
+                 {% for weakness in pokemon_weakness%}
+                    <li>{{weakness}}</li>
+                {% endfor %}
+             </ul>
+            <!---->
+        </div>
+
+    </div>
+{% endblock %}

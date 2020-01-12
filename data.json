@@ -1,18 +1,67 @@
 {
- "pokemons":{
-   "bulbasaur":{
-	  "description": "Bulbasaur can be seen napping in bright sunlight. There is a seed on its back. By soaking up the sun's rays, the seed grows progressively larger.",
-	  "info": {
-		"height": "2'04''",
-		"category": "seed",
-		"weight": "15.2lbs",
-		"abilities": ["overgrow"],
-		"type": ["grass", "poison"],
-		"weakness": ["fire", "flying","ice", "psychic"]
-	}
- }
-
-
-
- }
+  "pokemons": {
+    "bulbasaur": {
+      "description": "Bulbasaur can be seen napping in bright sunlight. There is a seed on its back. By soaking up the sun's rays, the seed grows progressively larger.",
+      "info": {
+        "height": "2'04''",
+        "category": "seed",
+        "weight": "15.2lbs",
+        "abilities": [
+          "overgrow"
+        ],
+        "type": [
+          "grass",
+          "poison"
+        ],
+        "weakness": [
+          "fire",
+          "flying",
+          "ice",
+          "psychic"
+        ]
+      }
+    },
+    "ivysaur": {
+      "description": "There is a bud on this Pokémon's back. To support its weight, Ivysaur's legs and trunk grow thick and strong. If it starts spending more time lying in the sunlight, it's a sign that the bud will bloom into a large flower soon.",
+      "info": {
+        "height": "3' 03''",
+        "category": "seed",
+        "weight": "28.7bs",
+        "abilities": [
+          "overgrow"
+        ],
+        "type": [
+          "grass",
+          "poison"
+        ],
+        "weakness": [
+          "fire",
+          "flying",
+          "ice",
+          "psychic"
+        ]
+      }
+    },
+    "venusaur": {
+      "description": "There is a large flower on Venusaur's back. The flower is said to take on vivid colors if it gets plenty of nutrition and sunlight. The flower's aroma soothes the emotions of people.",
+      "info": {
+        "height": "6' 07''",
+        "category": "seed",
+        "weight": "220.5 lbs",
+        "abilities": [
+          "overgrow"
+        ],
+        "type": [
+          "grass",
+          "poison"
+        ],
+        "weakness": [
+          "fire",
+          "flying",
+          "ice",
+          "psychic"
+        ]
+      }
+    }
+  }
 }

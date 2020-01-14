@@ -62,14 +62,16 @@ def index():
 def page_not_found(error):
     return render_template('404.html'), 404
 
+
 @app.route('/search', methods=["GET"])
 def detail_view():
     query = request.args.get("query")
 
     if query:
         query = query.strip().lower()
-        return redirect(url_for('pokedox',pokemon_name=query))
+        return redirect(url_for('pokedox', pokemon_name=query))
     return abort(404)
+
 
 @app.route('/add_pokemon', methods=["GET", "POST"])
 def add_pokemon():
@@ -80,19 +82,20 @@ def add_pokemon():
         if pokemon_id is not None and name is not None:
             pokemon_id = int(pokemon_id.strip())
             name = name.strip().lower()
-
+            image_link = request.form.get("image_link")
             description = request.form.get("description")
             height = request.form.get("height")
             weight = request.form.get("weight")
             category = request.form.get("category")
             ability = request.form.get("ability")
 
-            pokemon = Pokemon(pokemon_id=pokemon_id, image_link="https://assets.pokemon.com/assets/cms2/img/pokedex/full/001.png", name=name,
-                               description=description, height=height, category=category, weight=weight, abilities=ability)
+            pokemon = Pokemon(pokemon_id=pokemon_id, image_link=image_link, name=name,
+                              description=description, height=height, category=category, weight=weight,
+                              abilities=ability)
             db.session.add(pokemon)
 
-
-        pokemon_types = ["fire", "water", "grass", "eletric", "psychic", "steel", "normal", "fairy", "dark", "flying", "ghost", "poison", "ice", "ground", "rock", "dragon", "fighting", "bug"]
+        pokemon_types = ["fire", "water", "grass", "eletric", "psychic", "steel", "normal", "fairy", "dark", "flying",
+                         "ghost", "poison", "ice", "ground", "rock", "dragon", "fighting", "bug"]
 
         # Types of Pokemons
         for pokemon_type in pokemon_types:
@@ -110,9 +113,9 @@ def add_pokemon():
         return f"The Pokemon {name} has been added successfully."
     return render_template("add_pokemon.html")
 
+
 @app.route('/pokedox/<string:pokemon_name>')
 def pokedox(pokemon_name):
-
     pokemon = Pokemon.query.filter(Pokemon.name == pokemon_name).first()
     print(pokemon)
     if pokemon is not None:

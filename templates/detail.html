@@ -1,58 +1,58 @@
 {% extends "base.html"%}
 {% block content %}
-    <div class="container">
-        <h1 class="title">{{name.upper()}} </h1>
-        <img src="{{image_link}}"/>
-        <article>{{description}}</article>
-         <div id="#info">
+<div class="container">
+    <h1 class="title">{{name.upper()}} </h1>
+    <img src="{{image_link}}"/>
+    <article>{{description}}</article>
+    <div id="#info">
 
-             <div class="attributes">
+        <div class="attributes">
             <ul>
-              <li>
-                <span class="attribute-title">Height</span>
-                <span class="attribute-value">{{height}}</span>
-              </li>
+                <li>
+                    <span class="attribute-title">Height</span>
+                    <span class="attribute-value">{{height}}</span>
+                </li>
 
-              <li>
-                <span class="attribute-title">Weight</span>
-                <span class="attribute-value">{{weight}}</span>
-              </li>
+                <li>
+                    <span class="attribute-title">Weight</span>
+                    <span class="attribute-value">{{weight}}</span>
+                </li>
 
-              <li>
-                <span class="attribute-title">Gender</span>
+                <li>
+                    <span class="attribute-title">Gender</span>
 
-                <span class="attribute-value">
+                    <span class="attribute-value">
     <i class="icon icon_male_symbol"></i>
     <i class="icon icon_female_symbol"></i>
                 </span>
 
-              </li>
+                </li>
             </ul>
-          </div>
-            <!--Type-->
-            <h2>Type</h2>
-            <ul>
-                {% for type in pk_type%}
-                    <li>{{type.title()}}</li>
-                {% endfor %}
-            </ul>
-             <!---->
-
-
-             <!--Abilities -->
-             <h2> Abilities</h2>
-             <span class="attribute-value">{{abilities}}</span>
-            <!---->
-
-             <!--Weakness -->
-             <h2> Weakness</h2>
-             <ul>
-                 {% for w in weakness%}
-                    <li>{{w}}</li>
-                {% endfor %}
-             </ul>
-            <!---->
         </div>
+        <!--Type-->
+        <h2>Type</h2>
+        <ul>
+            {% for type in pk_type%}
+            <li>{{type.title()}}</li>
+            {% endfor %}
+        </ul>
+        <!---->
 
+
+        <!--Abilities -->
+        <h2> Abilities</h2>
+        <span class="attribute-value">{{abilities}}</span>
+        <!---->
+
+        <!--Weakness -->
+        <h2> Weakness</h2>
+        <ul>
+            {% for w in weakness%}
+            <li>{{w}}</li>
+            {% endfor %}
+        </ul>
+        <!---->
     </div>
+
+</div>
 {% endblock %}

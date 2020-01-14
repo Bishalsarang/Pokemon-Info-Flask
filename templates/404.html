@@ -21,7 +21,8 @@
         /*background-color: #555555;*/
         transform: translate(-50%, -50%);
     }
-    img{
+
+    img {
         height: auto;
     }
 
@@ -30,7 +31,8 @@
 <div class="container">
     <!-- HTML -->
     <div class="relative">
-        <h1 class="centered">Error 404! The page you are trying to access doesn't exist .Please try again or goto <a href="{{url_for('index')}}}">Home</a></h1>
+        <h1 class="centered">Error 404! The page you are trying to access doesn't exist .Please try again or goto <a
+                href="{{url_for('index')}}}">Home</a></h1>
 
         <img src="{{ url_for('static', filename='images/psy.png')}}" alt="">
     </div>

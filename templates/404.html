@@ -1,0 +1,41 @@
+{% extends "base.html"%}
+
+{% block content %}
+<style>
+
+    /* Container holding the image and the text */
+    .relative {
+        position: relative;
+        text-align: center;
+        color: white;
+    }
+
+    /* Centered text */
+    .centered {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        color: #ff130c;
+        font-family: "Bodoni MT";
+        font-size: 50px;
+        /*background-color: #555555;*/
+        transform: translate(-50%, -50%);
+    }
+    img{
+        height: auto;
+    }
+
+</style>
+
+<div class="container">
+    <!-- HTML -->
+    <div class="relative">
+        <h1 class="centered">Error 404! The page you are trying to access doesn't exist .Please try again or goto <a href="{{url_for('index')}}}">Home</a></h1>
+
+        <img src="{{ url_for('static', filename='images/psy.png')}}" alt="">
+    </div>
+
+    <h1></h1>
+</div>
+
+{% endblock %}

@@ -1,5 +1,5 @@
 # Author: Bishal Sarang
-from flask import Flask, render_template
+from flask import Flask, render_template, redirect, url_for, abort
 from flask_sqlalchemy import  SQLAlchemy
 from datetime import datetime
 
@@ -62,21 +62,26 @@ def index():
     return render_template("index.html")
 
 
+@app.errorhandler(404)
+def page_not_found(error):
+    return render_template('404.html'), 404
+
 @app.route('/pokedox/<string:pokemon_name>')
 def pokedox(pokemon_name):
 
     pokemon = Pokemon.query.filter(Pokemon.name==pokemon_name).first()
 
     if pokemon is not None:
-        pokemon_name = pokemon.name
+        name = pokemon.name
         image_link = pokemon.image_link
-        pokemon_description = pokemon.description
+        description = pokemon.description
         height = pokemon.height
         weight = pokemon.weight
-        pokemon_abilities = pokemon.abilities
+        abilities = pokemon.abilities
 
-        return  render_template("detail.html", pokemon_name=pokemon_name, image_link= image_link, pokemon_description=pokemon_description, height=height, weight=weight, pokemon_type=["grass"], pokemon_abilities=pokemon_abilities, pokemon_weakness=["water"])
-    return "Not found"
+        return  render_template("detail.html", name=name, image_link= image_link, description=description, height=height, weight=weight, type=["grass"], abilities=abilities, weakness=["water"])
+
+    return abort(404)
 
 if __name__ == "__main__":
     app.run(debug=True)

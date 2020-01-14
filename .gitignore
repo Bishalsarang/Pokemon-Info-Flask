@@ -72,6 +72,7 @@ instance/
 docs/_build/
 
 .idea
+sqlite
 # PyBuilder
 target/
 

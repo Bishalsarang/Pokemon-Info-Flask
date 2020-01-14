@@ -3,7 +3,7 @@
 {% block content %}
     <div class="content">
         <h1 class="title">{{pokemon_name.upper()}} </h1>
-        <img src="https://assets.pokemon.com/assets/cms2/img/pokedex/full/001.png"/>
+        <img src="{{image_link}}"/>
         <article>{{pokemon_description}}</article>
          <div id="#info">
 
@@ -42,11 +42,7 @@
 
              <!--Abilities -->
              <h2> Abilities</h2>
-             <ul>
-                 {% for ability in pokemon_abilities%}
-                    <li>{{ability}}</li>
-                 {% endfor %}
-             </ul>
+             <span class="attribute-value">{{pokemon_abilities}}</span>
             <!---->
 
              <!--Weakness -->

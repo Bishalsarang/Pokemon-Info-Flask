@@ -1,4 +1,4 @@
-from server import db
+from __main__ import db
 from datetime import datetime
 
 
@@ -15,6 +15,7 @@ class Pokemon(db.Model):
     date_added = db.Column(db.DateTime, default=datetime.now)
 
     types = db.relationship('Type', backref='pokemon', lazy='dynamic')
+    weaknesses = db.relationship('Weakness', backref='pokemon', lazy='dynamic')
 
     def __repr__(self):
         return f'Pokemon(id={self.id},name={self.name})'

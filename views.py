@@ -1,19 +1,5 @@
-# Author: Bishal Sarang
-from flask import Flask, render_template, redirect, url_for, abort, request
-from flask_sqlalchemy import SQLAlchemy
-
-app = Flask(__name__)
-app.secret_key = '\x024\xe6\x98\x8cq\x06mh\x90(4\xe6\xf5\xe9\xd6\xe4\x8f\x86\x91\x1f\xc0\xee\xaf'
-
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-# Use sqlite://// for absolute path
-# Use sqlite:/// for relative path
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
-
-db = SQLAlchemy(app)
-# I moved the import here to prevent circular dependencies between models.py and server.py
-# ./server.py -> import models
-# ./models.py -> from server import db
+from __main__ import app, db
+from flask import render_template, redirect, url_for, abort, request
 import models
 
 
@@ -105,7 +91,3 @@ def pokedox(pokemon_name):
                                weight=weight, pk_type=pk_type, abilities=abilities, weakness=weakness)
 
     return abort(404)
-
-
-if __name__ == "__main__":
-    app.run(debug=True)

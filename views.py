@@ -14,6 +14,27 @@ def page_not_found(error):
     return render_template('404.html'), 404
 
 
+@app.route('/list')
+def list_view():
+    pokemons = models.Pokemon.query.all()
+
+    pokemon_info = []
+    for pokemon in pokemons:
+        # Get Types of current Pokemon
+        types = models.Type.query.filter(models.Type.pokemon_id == pokemon.id).all()
+        types = [pk_type.type for pk_type in types]
+
+        # Get Weakness of current Pokemon
+        weaknesses = models.Weakness.query.filter(models.Weakness.pokemon_id == pokemon.id).all()
+        weaknesses = [weakness.weakness for weakness in weaknesses]
+
+        print(weaknesses)
+        pokemon_num, name, description, image_url, category, height, weight, p_type = pokemon.pokemon_id, pokemon.name, pokemon.description, pokemon.image_link, pokemon.category, pokemon.height, pokemon.weight, types
+        pokemon_info.append((pokemon_num, name, description, image_url, category, height, weight, types, weaknesses))
+
+    return render_template('list.html', pokemon_info=pokemon_info)
+
+
 @app.route('/search', methods=["GET"])
 def detail_view():
     query = request.args.get("query")
@@ -68,7 +89,6 @@ def add_pokemon():
 @app.route('/pokedox/<string:pokemon_name>')
 def pokedox(pokemon_name):
     pokemon = models.Pokemon.query.filter(models.Pokemon.name == pokemon_name).first()
-    print(pokemon)
     if pokemon is not None:
         name = pokemon.name
         pokemon_id = pokemon.pokemon_id

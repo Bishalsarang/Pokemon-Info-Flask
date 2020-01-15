@@ -1,7 +1,6 @@
 # Author: Bishal Sarang
 from flask import Flask, render_template, redirect, url_for, abort, request
 from flask_sqlalchemy import SQLAlchemy
-from datetime import datetime
 
 app = Flask(__name__)
 app.secret_key = '\x024\xe6\x98\x8cq\x06mh\x90(4\xe6\xf5\xe9\xd6\xe4\x8f\x86\x91\x1f\xc0\xee\xaf'
@@ -12,44 +11,10 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 
 db = SQLAlchemy(app)
-
-
-class Pokemon(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    pokemon_id = db.Column(db.Integer, unique=True)
-    name = db.Column(db.String(20), unique=True, nullable=False)
-    description = db.Column(db.Text)
-    image_link = db.Column(db.String(20))
-    height = db.Column(db.String(20))
-    category = db.Column(db.String(20))
-    weight = db.Column(db.String(20))
-    abilities = db.Column(db.String(20))
-    date_added = db.Column(db.DateTime, default=datetime.now)
-
-    types = db.relationship('Type', backref='pokemon', lazy='dynamic')
-
-    def __repr__(self):
-        return f'Pokemon(id={self.id},name={self.name})'
-
-
-class Type(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    type = db.Column(db.String(20))
-
-    pokemon_id = db.Column(db.Integer, db.ForeignKey('pokemon.pokemon_id'))
-
-    def __repr__(self):
-        return f'Type(pokemon_id={self.pokemon_id},type={self.type})'
-
-
-class Weakness(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    weakness = db.Column(db.String(20))
-
-    pokemon_id = db.Column(db.Integer, db.ForeignKey('pokemon.pokemon_id'))
-
-    def __repr__(self):
-        return f'Weakness({self.pokemon_id},{self.weakness})'
+# I moved the import here to prevent circular dependencies between models.py and server.py
+# ./server.py -> import models
+# ./models.py -> from server import db
+import models
 
 
 @app.route('/')
@@ -89,9 +54,9 @@ def add_pokemon():
             category = request.form.get("category")
             ability = request.form.get("ability")
 
-            pokemon = Pokemon(pokemon_id=pokemon_id, image_link=image_link, name=name,
-                              description=description, height=height, category=category, weight=weight,
-                              abilities=ability)
+            pokemon = models.Pokemon(pokemon_id=pokemon_id, image_link=image_link, name=name,
+                                     description=description, height=height, category=category, weight=weight,
+                                     abilities=ability)
             db.session.add(pokemon)
 
         pokemon_types = ["fire", "water", "grass", "eletric", "psychic", "steel", "normal", "fairy", "dark", "flying",
@@ -100,12 +65,12 @@ def add_pokemon():
         # Types of Pokemons
         for pokemon_type in pokemon_types:
             if request.form.get(f"t_{pokemon_type}") == "on":
-                db.session.add(Type(pokemon_id=pokemon_id, type=f"{pokemon_type}"))
+                db.session.add(models.Type(pokemon_id=pokemon_id, type=f"{pokemon_type}"))
 
         # Weakness of Pokemons
         for pokemon_type in pokemon_types:
             if request.form.get(f"w_{pokemon_type}") == "on":
-                db.session.add(Weakness(pokemon_id=pokemon_id, weakness=f"{pokemon_type}"))
+                db.session.add(models.Weakness(pokemon_id=pokemon_id, weakness=f"{pokemon_type}"))
 
         db.session.commit()
 
@@ -116,7 +81,7 @@ def add_pokemon():
 
 @app.route('/pokedox/<string:pokemon_name>')
 def pokedox(pokemon_name):
-    pokemon = Pokemon.query.filter(Pokemon.name == pokemon_name).first()
+    pokemon = models.Pokemon.query.filter(models.Pokemon.name == pokemon_name).first()
     print(pokemon)
     if pokemon is not None:
         name = pokemon.name
@@ -128,11 +93,11 @@ def pokedox(pokemon_name):
         abilities = pokemon.abilities
 
         # Extract Pokemon type info
-        type_query = Type.query.filter(Type.pokemon_id == pokemon_id).all()
+        type_query = models.Type.query.filter(models.Type.pokemon_id == pokemon_id).all()
         pk_type = [pokemon_type.type for pokemon_type in type_query]
 
         # Extract Pokemon weakness info
-        weakness_query = Weakness.query.filter(Weakness.pokemon_id == pokemon_id).all()
+        weakness_query = models.Weakness.query.filter(models.Weakness.pokemon_id == pokemon_id).all()
         weakness = [pokemon_weakness.weakness for pokemon_weakness in weakness_query]
 
         print(weakness_query)

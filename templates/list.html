@@ -1,58 +1,69 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<style>
+    .table-container {
+        width: 110%;
+        height: 800px;
+        overflow: auto;
+    }
+
+    th {
+        background-color: #4CAF50;
+        color: white;
+    }
+</style>
 
 <div class="container">
-    <h1 class="title">Pokemons</h1>
-    <table class="table table-striped table-dark">
-        <thead>
-        <tr>
-            <th scope="col">Pokedox #</th>
-            <th scope="col">Name</th>
-            <th scope="col">Description</th>
-            <th scope="col">Image</th>
-            <th scope="col">Category</th>
-            <th scope="col">Height</th>
-            <th scope="col">Weight</th>
-            <th>Type</th>
-            <th>Weakness</th>
-        </tr>
-        </thead>
-        <tbody>
-        <!--Append Each rows-->
-        {% for pokemon_num, name, description, image_link, category, height, weight, p_type, weaknesses in
-        pokemon_info%}
-        <tr>
-            <th scope="row">{{pokemon_num}}</th>
-            <td>{{name}}</td>
-            <td>{{description}}</td>
-            <td>
-                <img style="border-style: inset;height: 140px;" src="{{image_link}}">
-            </td>
-            <td> {{category}}</td>
-            <td> {{height}}</td>
-            <td> {{weight}}</td>
-            <td>
-                <ul>
-                    {% for pokemon_type in p_type%}
-                    <li>{{pokemon_type}}</li>
-                    {% endfor %}
-                </ul>
-            </td>
-            <td>
-                <ul>
-                    {% for weakness in weaknesses%}
-                    <li>{{weakness}}</li>
-                    {% endfor %}
-                </ul>
-            </td>
-
-
-        </tr>
-        {% endfor %}
-
-        </tbody>
-    </table>
+    <div class="table-container">
+        <h1 class="title">Pokemons</h1>
+        <table id="pokemon_table" class="table hover cell-border" style="width:100%">
+            <thead>
+            <tr>
+                <th scope="col">Pokedox #</th>
+                <th scope="col">Name</th>
+                <th scope="col">Description</th>
+                <th scope="col">Image</th>
+                <th scope="col">Category</th>
+                <th scope="col">Height</th>
+                <th scope="col">Weight</th>
+                <th>Type</th>
+                <th>Weakness</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!--Append Each rows-->
+            {% for pokemon_num, name, description, image_link, category, height, weight, p_type, weaknesses in
+            pokemon_info%}
+            <tr class="table-active">
+                <td>{{pokemon_num}}</td>
+                <td>{{name.title()}}</td>
+                <td>{{description}}</td>
+                <td>
+                    <img style="border-style: hidden;height: 140px;" src="{{image_link}}">
+                </td>
+                <td> {{category.title()}}</td>
+                <td> {{height}}</td>
+                <td> {{weight}}</td>
+                <td>
+                    <ul>
+                        {% for pokemon_type in p_type%}
+                        <li>{{pokemon_type.title()}}</li>
+                        {% endfor %}
+                    </ul>
+                </td>
+                <td>
+                    <ul>
+                        {% for weakness in weaknesses%}
+                        <li>{{weakness.title()}}</li>
+                        {% endfor %}
+                    </ul>
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
 </div>
 {% endblock %}

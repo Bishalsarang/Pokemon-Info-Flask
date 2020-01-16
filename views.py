@@ -43,6 +43,38 @@ def detail_view():
         return redirect(url_for('pokedox', pokemon_name=query))
     return abort(404)
 
+@app.route('/delete_pokemon')
+def delete_pokemon():
+    if request.method == "GET":
+        pokemon_id = int(request.args.get("q").strip())
+
+        # Delete from Pokemon table
+        q_pokemon = models.Pokemon.query.filter(models.Pokemon.pokemon_id == pokemon_id).first()
+
+        # If at least one query exits then it is possible to delete
+        if q_pokemon is not None:
+            name = q_pokemon.name
+
+            db.session.delete(q_pokemon)
+
+            # Delete from Type table
+            q_pokemon_types = models.Type.query.filter(models.Type.pokemon_id == pokemon_id).all()
+            for pokemon_type in q_pokemon_types:
+                db.session.delete(pokemon_type)
+
+            # Delete from Weakness Table
+            q_pokemon_weakness = models.Weakness.query.filter(models.Weakness.pokemon_id == pokemon_id).all()
+            for pokemon_weakness in q_pokemon_weakness:
+                db.session.delete(pokemon_weakness)
+
+            # Write changes to database
+            db.session.commit()
+            return render_template("success.html", name=name, operation="deleted")
+        else:
+            # Pokemon with requested id is not found
+            return  render_template("error.html", message=f"Requested {pokemon_id} doesn't exist")
+    return f"Request method {request.method} not allowed"
+
 @app.route('/edit_pokemon', methods=["GET", "POST"])
 def edit_pokemon():
     pokemon_types = ["fire", "water", "grass", "eletric", "psychic", "steel", "normal", "fairy", "dark", "flying",
@@ -90,8 +122,14 @@ def edit_pokemon():
                 if pokemon_type in queried_pk_weaknesses:
                     pk_weakness_flag[i] = 1
 
+            return render_template("edit_pokemon.html", name=name, pokemon_id=pokemon_id, image_link=image_link,
+                                   description=description, height=height, weight=weight, category=category,
+                                   abilities=abilities, pk_type_flag=pk_type_flag, pk_weakness_flag=pk_weakness_flag,
+                                   pokemon_types=pokemon_types)
+
         else:
-            return  abort(404)
+            return render_template("error.html", message=f"Requested {pokemon_id} doesn't exist")
+
     # When submit button is clicked
     elif request.method == "POST":
 
@@ -118,6 +156,11 @@ def edit_pokemon():
         for pokemon_type in q_pokemon_types:
             db.session.delete(pokemon_type)
 
+        # Types of Pokemons
+        for pokemon_type in pokemon_types:
+            if request.form.get(f"t_{pokemon_type}") == "on":
+                db.session.add(models.Type(pokemon_id=pokemon_id, type=f"{pokemon_type}"))
+
         """
                 Update edited Pokemon weakness
         """
@@ -125,26 +168,15 @@ def edit_pokemon():
         for pokemon_weakness in q_pokemon_weakness:
             db.session.delete(pokemon_weakness)
 
-        # Types of Pokemons
-        for pokemon_type in pokemon_types:
-            if request.form.get(f"t_{pokemon_type}") == "on":
-                db.session.add(models.Type(pokemon_id=pokemon_id, type=f"{pokemon_type}"))
-
         # Weakness of Pokemons
         for pokemon_type in pokemon_types:
             if request.form.get(f"w_{pokemon_type}") == "on":
                 db.session.add(models.Weakness(pokemon_id=pokemon_id, weakness=f"{pokemon_type}"))
 
         db.session.commit()
-        return f"Updated pokemon{pokemon_name} successfully"
+        return  render_template("success.html", name=pokemon_name, operation="updated")
+    return f"Request method {request.method} not allowed"
 
-
-
-    else:
-        pass
-
-
-    return render_template("edit_pokemon.html", name=name, pokemon_id=pokemon_id, image_link=image_link, description=description, height=height, weight=weight, category=category, abilities=abilities, pk_type_flag=pk_type_flag, pk_weakness_flag=pk_weakness_flag, pokemon_types=pokemon_types)
 
 @app.route('/add_pokemon', methods=["GET", "POST"])
 def add_pokemon(): 
@@ -169,24 +201,24 @@ def add_pokemon():
                                      abilities=ability)
             db.session.add(pokemon)
 
-        
+            # Types of Pokemons
+            for pokemon_type in pokemon_types:
+                if request.form.get(f"t_{pokemon_type}") == "on":
+                    db.session.add(models.Type(pokemon_id=pokemon_id, type=f"{pokemon_type}"))
 
-        # Types of Pokemons
-        for pokemon_type in pokemon_types:
-            if request.form.get(f"t_{pokemon_type}") == "on":
-                db.session.add(models.Type(pokemon_id=pokemon_id, type=f"{pokemon_type}"))
+            # Weakness of Pokemons
+            for pokemon_type in pokemon_types:
+                if request.form.get(f"w_{pokemon_type}") == "on":
+                    db.session.add(models.Weakness(pokemon_id=pokemon_id, weakness=f"{pokemon_type}"))
 
-        # Weakness of Pokemons
-        for pokemon_type in pokemon_types:
-            if request.form.get(f"w_{pokemon_type}") == "on":
-                db.session.add(models.Weakness(pokemon_id=pokemon_id, weakness=f"{pokemon_type}"))
+            db.session.commit()
+            return render_template("success.html", name=name, operation="added")
+        else:
+            return render_template("error.html", message=f"Requested {pokemon_id} doesn't exist")
 
-        db.session.commit()
-
-        # Add to db
-        return f"The Pokemon {name} has been added successfully."
-    return render_template("add_pokemon.html", pokemon_types=pokemon_types)
-
+    elif request.method == "GET":
+        return render_template("add_pokemon.html", pokemon_types=pokemon_types)
+    return f"Request method {request.method} not allowed"
 
 @app.route('/pokedox/<string:pokemon_name>')
 def pokedox(pokemon_name):

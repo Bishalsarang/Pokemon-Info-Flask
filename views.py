@@ -28,7 +28,6 @@ def list_view():
         weaknesses = models.Weakness.query.filter(models.Weakness.pokemon_id == pokemon.id).all()
         weaknesses = [weakness.weakness for weakness in weaknesses]
 
-        print(weaknesses)
         pokemon_num, name, description, image_url, category, height, weight, p_type = pokemon.pokemon_id, pokemon.name, pokemon.description, pokemon.image_link, pokemon.category, pokemon.height, pokemon.weight, types
         pokemon_info.append((pokemon_num, name, description, image_url, category, height, weight, types, weaknesses))
 
@@ -44,9 +43,90 @@ def detail_view():
         return redirect(url_for('pokedox', pokemon_name=query))
     return abort(404)
 
+@app.route('/edit/<int:pokemon_id>', methods=["GET", "POST"])
+def edit_pokemon(pokemon_id):
+
+    pokemon_types = ["fire", "water", "grass", "eletric", "psychic", "steel", "normal", "fairy", "dark", "flying",
+     "ghost", "poison", "ice", "ground", "rock", "dragon", "fighting", "bug"]
+
+    if request.method == "GET":
+        pokemon = models.Pokemon.query.filter(models.Pokemon.pokemon_id == pokemon_id).first()
+
+        if pokemon is not None:
+            name = pokemon.name
+            pokemon_id = pokemon.pokemon_id
+            image_link = pokemon.image_link
+            description = pokemon.description
+            category = pokemon.category
+            height = pokemon.height
+            weight = pokemon.weight
+            abilities = pokemon.abilities
+
+            # Extract Pokemon type info
+            type_query = models.Type.query.filter(models.Type.pokemon_id == pokemon_id).all()
+            pk_type = [pokemon_type.type for pokemon_type in type_query]
+
+            pk_type_flag = [0] * len(pokemon_types)
+            for i, pokemon_type in enumerate(pokemon_types):
+                if pokemon_type in pk_type:
+                    pk_type_flag[i] = 1
+
+            # Extract Pokemon weakness info
+            weakness_query = models.Weakness.query.filter(models.Weakness.pokemon_id == pokemon_id).all()
+            weakness = [pokemon_weakness.weakness for pokemon_weakness in weakness_query]
+
+            pk_weakness_flag = [0] * len(pokemon_types)
+            for i, pokemon_type in enumerate(pokemon_types):
+                if pokemon_type in weakness:
+                    pk_weakness_flag[i] = 1
+
+            return render_template("add_pokemon.html", name=name, pokemon_id=pokemon_id, image_link=image_link, description=description, category=category,height=height,
+                                   weight=weight, pk_type=pk_type, abilities=abilities, weakness=weakness,     pokemon_types = pokemon_types, pk_type_flag=pk_type_flag, pk_weakness_flag=pk_weakness_flag)
+
+        elif request.method == "POST":
+            print("post here")
+            pokemon = models.Pokemon.query.filter(models.Pokemon.pokemon_id == pokemon_id).first()
+
+            pokemon_id = request.form.get("pokemon_id")
+            name = request.form.get("name")
+            if pokemon_id is not None and name is not None:
+                pokemon.name = name
+                pokemon.pokemon_id = pokemon_id
+                pokemon.image_link = request.form.get("image_link")
+                pokemon.description = request.form.get("description")
+
+                pokemon.category = request.form.get("category")
+                pokemon.height = request.form.get("height")
+                pokemon.weight = request.form.get("weight")
+                pokemon.abilities = request.form.get("ability")
+
+
+                # Delete all the previous entries
+                pokemon_types_database = models.Type.filter(models.Pokemon.pokemon_id == pokemon_id).all()
+                for row in pokemon_types_database:
+                    db.session.delete(row)
+                # Uodate new entries
+                for pokemon_type in pokemon_types:
+                    if request.form.get(f"t_{pokemon_type}") == "on":
+                        db.session.add(models.Type(pokemon_id=pokemon_id, type=f"{pokemon_type}"))
+
+                pokemon_weakness_database = models.Type.filter(models.Pokemon.pokemon_id == pokemon_id).all()
+                for row in pokemon_weakness_database:
+                    db.session.delete(row)
+
+                # Uodate new entries
+                for pokemon_type in pokemon_types:
+                    if request.form.get(f"t_{pokemon_type}") == "on":
+                        db.session.add(models.Type(pokemon_id=pokemon_id, type=f"{pokemon_type}"))
+
+            db.session.commit()
+            return "Edited"
+        return abort(404)
 
 @app.route('/add_pokemon', methods=["GET", "POST"])
 def add_pokemon():
+    pokemon_types = ["fire", "water", "grass", "eletric", "psychic", "steel", "normal", "fairy", "dark", "flying",
+                     "ghost", "poison", "ice", "ground", "rock", "dragon", "fighting", "bug"]
     if request.method == "POST":
         pokemon_id = request.form.get("pokemon_id")
         name = request.form.get("name")
@@ -83,7 +163,7 @@ def add_pokemon():
 
         # Add to db
         return f"The Pokemon {name} has been added successfully."
-    return render_template("add_pokemon.html")
+    return render_template("add_pokemon.html", pokemon_types=pokemon_types)
 
 
 @app.route('/pokedox/<string:pokemon_name>')
@@ -106,7 +186,6 @@ def pokedox(pokemon_name):
         weakness_query = models.Weakness.query.filter(models.Weakness.pokemon_id == pokemon_id).all()
         weakness = [pokemon_weakness.weakness for pokemon_weakness in weakness_query]
 
-        print(weakness_query)
         return render_template("detail.html", name=name, image_link=image_link, description=description, height=height,
                                weight=weight, pk_type=pk_type, abilities=abilities, weakness=weakness)
 

@@ -44,6 +44,9 @@ def detail_view():
         return redirect(url_for('pokedox', pokemon_name=query))
     return abort(404)
 
+@app.route('/edit_pokemon', methods=["GET", "POST"])
+def edit_pokemon():
+    return "EDIT"
 
 @app.route('/add_pokemon', methods=["GET", "POST"])
 def add_pokemon(): 

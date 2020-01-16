@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+    <h1> Edit  Pokemon</h1>
+    <form method="post" action="{{url_for('edit_pokemon')}}">
+         {% include "./_includes/_form.html" %}
+    </form>
+</div>
+{% endblock %}

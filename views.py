@@ -46,7 +46,9 @@ def detail_view():
 
 
 @app.route('/add_pokemon', methods=["GET", "POST"])
-def add_pokemon():
+def add_pokemon(): 
+    pokemon_types = ["fire", "water", "grass", "eletric", "psychic", "steel", "normal", "fairy", "dark", "flying",
+                         "ghost", "poison", "ice", "ground", "rock", "dragon", "fighting", "bug"]
     if request.method == "POST":
         pokemon_id = request.form.get("pokemon_id")
         name = request.form.get("name")
@@ -66,8 +68,7 @@ def add_pokemon():
                                      abilities=ability)
             db.session.add(pokemon)
 
-        pokemon_types = ["fire", "water", "grass", "eletric", "psychic", "steel", "normal", "fairy", "dark", "flying",
-                         "ghost", "poison", "ice", "ground", "rock", "dragon", "fighting", "bug"]
+        
 
         # Types of Pokemons
         for pokemon_type in pokemon_types:
@@ -83,7 +84,7 @@ def add_pokemon():
 
         # Add to db
         return f"The Pokemon {name} has been added successfully."
-    return render_template("add_pokemon.html")
+    return render_template("add_pokemon.html", pokemon_types=pokemon_types)
 
 
 @app.route('/pokedox/<string:pokemon_name>')

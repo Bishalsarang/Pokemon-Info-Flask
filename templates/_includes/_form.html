@@ -1,0 +1,100 @@
+<form method="post" action="{{url_for('edit_pokemon', pokemon_id=1)}}">
+        <div class="form-group row">
+            <label for="pokemon_id" class="col-sm-2 col-form-label">Pokedox ID</label>
+            <div class="col-sm-10">
+                <input type="text" name="pokemon_id" value="{{pokemon_id}}" class="form-control" id="pokemon_id" placeholder=""
+                       required>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="name" class="col-sm-2 col-form-label">Name</label>
+            <div class="col-sm-10">
+                <input type="text" name="name" value="{{name|title()}}" class="form-control" id="name" placeholder="" required>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="image_link" class="col-sm-2 col-form-label">Image Link</label>
+            <div class="col-sm-10">
+                <input type="text" name="image_link" value="{{image_link}}" class="form-control" id="image_link" placeholder="">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="description" class="col-sm-2 col-form-label">Description</label>
+            <div class="col-sm-10">
+                <input type="text" name="description" value="{{description}}" class="form-control" id="description" placeholder=""
+                       required>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="height" class="col-sm-2 col-form-label">Height</label>
+            <div class="col-sm-10">
+                <input type="text" name="height" value="{{height}}" class="form-control" id="height" placeholder="">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="weight" class="col-sm-2 col-form-label">Weight</label>
+            <div class="col-sm-10">
+                <input type="text" name="weight" value="{{weight}}" class="form-control" id="weight" placeholder="">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="category" class="col-sm-2 col-form-label">Category</label>
+            <div class="col-sm-10">
+                <input type="text" name="category" value="{{category}}" class="form-control" id="category" placeholder="">
+            </div>
+
+        </div>
+        <div class="form-group row">
+            <label for="ability" class="col-sm-2 col-form-label">Ability</label>
+            <div class="col-sm-10">
+                <input type="text" name="ability" value="{{abilities}}" class="form-control" id="ability" placeholder="">
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Type</label>
+            <div class="col-sm-10">
+                {% for pokemon_type in pokemon_types%}
+                     {% if pk_type_flag and pk_type_flag[loop.index - 1]%}
+                       <input name="t_{{pokemon_type}}" checked type="checkbox" data-toggle="toggle" data-on="{{pokemon_type|title()}}" data-off="{{pokemon_type|title()}}"
+                       data-onstyle="warning"
+                       data-offstyle="secondary">
+                    {% else %}
+                        <input name="t_{{pokemon_type}}" type="checkbox" data-toggle="toggle" data-on="{{pokemon_type|title()}}" data-off="{{pokemon_type|title()}}"
+                       data-onstyle="warning"
+                       data-offstyle="secondary">
+                    {% endif %}
+                    {% if loop.index % 6 == 0 %}
+                        <hr>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        <hr>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Weakness</label>
+            <div class="col-sm-10">
+                {% for pokemon_type in pokemon_types%}
+                    {% if pk_weakness_flag and pk_weakness_flag[loop.index - 1]%}
+                        <input name="w_{{pokemon_type}}" checked type="checkbox" data-toggle="toggle" data-on="{{pokemon_type|title()}}" data-off="{{pokemon_type|title()}}"
+                        data-onstyle="warning"
+                        data-offstyle="secondary">
+                    {% else %}
+                        <input name="w_{{pokemon_type}}"  type="checkbox" data-toggle="toggle" data-on="{{pokemon_type|title()}}" data-off="{{pokemon_type|title()}}"
+                        data-onstyle="warning"
+                        data-offstyle="secondary">
+                    {% endif %}
+                    {% if loop.index % 6 == 0 %}
+                        <hr>
+                    {% endif %}
+                {% endfor %}
+
+
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-sm-10">
+                <button type="submit" name="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </div>

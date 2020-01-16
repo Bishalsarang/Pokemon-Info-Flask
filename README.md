@@ -8,6 +8,7 @@ I've tried implementing a simple MVT architecture by separating components into 
 In addition to this, I've implemented **manage.py** file for common database migration commands and running server commands.
 For database, I have used SQlite. Instead of using raw SQL queries I have chosen to use SQLAlchemy to understand ORM database model.
 
+I've deployed the app on heroku. You can view the demo [here](https://flask-pokedox.herokuapp.com/)
 ## How to use:    
 - Clone this  [repository](https://github.com/sarangbishal/Pokemon-Info-Flask-)  
  - Install all the requirements  

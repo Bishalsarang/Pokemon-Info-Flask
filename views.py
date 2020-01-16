@@ -36,11 +36,14 @@ def list_view():
 
 @app.route('/search', methods=["GET"])
 def detail_view():
-    query = request.args.get("query")
-
-    if query:
-        query = query.strip().lower()
-        return redirect(url_for('pokedox', pokemon_name=query))
+    q = request.args.get("q")
+    try:
+        if q:
+            q = q.strip().lower()
+            return redirect(url_for('pokedox', pokemon_name=q))
+    except  Exception as e:
+        queried_pokemon_name = models.Pokemon.query.filter(models.Pokemon.pokemon_id == int(q)).first()
+        return redirect(url_for('pokedox', pokemon_name=queried_pokemon_name))
     return abort(404)
 
 @app.route('/delete_pokemon')

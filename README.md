@@ -1,9 +1,13 @@
 # Pokemon-Info-Flask- 
-The purpose of this repository is to understand working of Flask and features like routing, template as well as understand using database by creating Pokedox that allows CRUD operations.    
-For database, I have used SQlite. Instead of using raw SQL queries  I have choosen to use SQLAlchemy to understand ORM database model.    
-    
-    
-    
+The purpose of this repository is to understand working of Flask and features like routing, template as well as understand using database by creating Pokedox that allows CRUD operations.
+
+I've tried implementing a simple MVT architecture by separating components into following files:
+- models.py: contains ORM for database schema
+- views.py: contains application logic i.e the response the apps returns
+- ./templates/: contains Jinja html templates
+In addition to this, I've implemented manage.py file for common database migration commands and running server commands.
+For database, I have used SQlite. Instead of using raw SQL queries I have chosen to use SQLAlchemy to understand ORM database model.
+
 ## How to use:    
 - Clone this  [repository](https://github.com/sarangbishal/Pokemon-Info-Flask-)  
  - Install all the requirements  

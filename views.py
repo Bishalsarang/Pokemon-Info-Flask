@@ -28,7 +28,6 @@ def list_view():
         weaknesses = models.Weakness.query.filter(models.Weakness.pokemon_id == pokemon.id).all()
         weaknesses = [weakness.weakness for weakness in weaknesses]
 
-        print(weaknesses)
         pokemon_num, name, description, image_url, category, height, weight, p_type = pokemon.pokemon_id, pokemon.name, pokemon.description, pokemon.image_link, pokemon.category, pokemon.height, pokemon.weight, types
         pokemon_info.append((pokemon_num, name, description, image_url, category, height, weight, types, weaknesses))
 
@@ -46,7 +45,106 @@ def detail_view():
 
 @app.route('/edit_pokemon', methods=["GET", "POST"])
 def edit_pokemon():
-    return "EDIT"
+    pokemon_types = ["fire", "water", "grass", "eletric", "psychic", "steel", "normal", "fairy", "dark", "flying",
+                     "ghost", "poison", "ice", "ground", "rock", "dragon", "fighting", "bug"]
+
+    # When route edit_pokemon receives a query
+    if request.method == "GET":
+        pokemon_id = request.args.get("q")
+        if pokemon_id is not None:
+
+            """
+                Fill basic pokemon info
+            """
+            pokemon_id = int(pokemon_id.strip())
+            q_pokemon = models.Pokemon.query.filter(models.Pokemon.pokemon_id == pokemon_id).first()
+            name = q_pokemon.name
+            description= q_pokemon.description
+            height = q_pokemon.height
+            weight = q_pokemon.weight
+            image_link = q_pokemon.image_link
+            category = q_pokemon.category
+            abilities = q_pokemon.abilities
+
+            """
+                Set button for queried pokemon type
+            """
+            queried_pk_types = models.Type.query.filter(models.Type.pokemon_id == pokemon_id).all()
+            queried_pk_types = [pokemon_type.type for pokemon_type in queried_pk_types]
+
+            pk_type_flag = [0] * len(pokemon_types)
+
+            for i, pokemon_type in enumerate(pokemon_types):
+                if pokemon_type in queried_pk_types:
+                    pk_type_flag[i] = 1
+
+            """
+                Set button for queried pokemon weaknesses
+            """
+            queried_pk_weaknesses= models.Weakness.query.filter(models.Weakness.pokemon_id == pokemon_id).all()
+            queried_pk_weaknesses = [pokemon_type.weakness for pokemon_type in queried_pk_weaknesses]
+
+            pk_weakness_flag = [0] * len(pokemon_types)
+
+            for i, pokemon_type in enumerate(pokemon_types):
+                if pokemon_type in queried_pk_weaknesses:
+                    pk_weakness_flag[i] = 1
+
+        else:
+            return  abort(404)
+    # When submit button is clicked
+    elif request.method == "POST":
+
+        """
+            Update edited Pokemon infos
+        """
+        pokemon_id = int(request.form.get("pokemon_id"))
+        pokemon_name = request.form.get("name")
+        q_pokemon = models.Pokemon.query.filter(models.Pokemon.pokemon_id == pokemon_id).first()
+
+        q_pokemon.pokemon_id = pokemon_id
+        q_pokemon.name = pokemon_name
+        q_pokemon.description = request.form.get("description")
+        q_pokemon.image_link = request.form.get("image_link")
+        q_pokemon.height = request.form.get("height")
+        q_pokemon.weight = request.form.get("weight")
+        q_pokemon.category = request.form.get("category")
+        q_pokemon.abilities = request.form.get("ability")
+
+        """
+            Update edited Pokemon type
+        """
+        q_pokemon_types = models.Type.query.filter(models.Type.pokemon_id == pokemon_id).all()
+        for pokemon_type in q_pokemon_types:
+            db.session.delete(pokemon_type)
+
+        """
+                Update edited Pokemon weakness
+        """
+        q_pokemon_weakness = models.Weakness.query.filter(models.Weakness.pokemon_id == pokemon_id).all()
+        for pokemon_weakness in q_pokemon_weakness:
+            db.session.delete(pokemon_weakness)
+
+        # Types of Pokemons
+        for pokemon_type in pokemon_types:
+            if request.form.get(f"t_{pokemon_type}") == "on":
+                db.session.add(models.Type(pokemon_id=pokemon_id, type=f"{pokemon_type}"))
+
+        # Weakness of Pokemons
+        for pokemon_type in pokemon_types:
+            if request.form.get(f"w_{pokemon_type}") == "on":
+                db.session.add(models.Weakness(pokemon_id=pokemon_id, weakness=f"{pokemon_type}"))
+
+        db.session.commit()
+        return f"Updated pokemon{pokemon_name} successfully"
+
+
+
+    else:
+        pass
+
+
+    return render_template("edit_pokemon.html", name=name, pokemon_id=pokemon_id, image_link=image_link, description=description, height=height, weight=weight, category=category, abilities=abilities, pk_type_flag=pk_type_flag, pk_weakness_flag=pk_weakness_flag, pokemon_types=pokemon_types)
 
 @app.route('/add_pokemon', methods=["GET", "POST"])
 def add_pokemon(): 
@@ -110,7 +208,6 @@ def pokedox(pokemon_name):
         weakness_query = models.Weakness.query.filter(models.Weakness.pokemon_id == pokemon_id).all()
         weakness = [pokemon_weakness.weakness for pokemon_weakness in weakness_query]
 
-        print(weakness_query)
         return render_template("detail.html", name=name, image_link=image_link, description=description, height=height,
                                weight=weight, pk_type=pk_type, abilities=abilities, weakness=weakness)
 

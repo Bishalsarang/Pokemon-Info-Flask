@@ -143,7 +143,7 @@ def edit_pokemon():
             Update edited Pokemon infos
         """
         pokemon_id = int(request.form.get("pokemon_id"))
-        pokemon_name = request.form.get("name")
+        pokemon_name = request.form.get("name").strip().lower()
         q_pokemon = models.Pokemon.query.filter(models.Pokemon.pokemon_id == pokemon_id).first()
 
         q_pokemon.pokemon_id = pokemon_id

@@ -1,5 +1,5 @@
-from __main__ import db
 from datetime import datetime
+from __main__ import db
 
 
 class Pokemon(db.Model):

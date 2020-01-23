@@ -1,25 +1,25 @@
-<div class="form-group row">
-    <label for="pokemon_id" class="col-sm-2 col-form-label">Pokedox ID</label>
-    <div class="col-sm-10">
-        <input type="text" name="pokemon_id" value="{{ pokemon_id }}" class="form-control" id="pokemon_id"
-               placeholder=""
-               required>
+<!-- Macro to remove code duplication -->
+
+<!-- Macro to build form fields -->
+{% macro make_field(field, value, id) %}
+    <div class="form-group row">
+        {{ field.label(class="col-sm-2 col-form-label")}}
+        <div class="col-sm-10">
+            {{ field( value= value, class="form-control" , id=id)}}
+        </div>
     </div>
-</div>
-<div class="form-group row">
-    <label for="name" class="col-sm-2 col-form-label">Name</label>
-    <div class="col-sm-10">
-        <input type="text" name="name" value="{{ name|title() }}" class="form-control" id="name" placeholder=""
-               required>
-    </div>
-</div>
-<div class="form-group row">
-    <label for="image_link" class="col-sm-2 col-form-label">Image Link</label>
-    <div class="col-sm-10">
-        <input type="text" name="image_link" value="{{ image_link }}" class="form-control" id="image_link"
-               placeholder="">
-    </div>
-</div>
+{% endmacro %}
+
+<!-- CSRF Token -->
+{{ form.hidden_tag() }}
+<!-- Pokemon ID  -->
+{{ make_field(field=form.pokemon_id, value=pokemon_id, id="pokemon_id")}}
+<!-- Pokemon Name  -->
+{{ make_field(field=form.name, value=name, id="name")}}
+<!-- Pokemon Image Link  -->
+{{ make_field(field=form.image_link, value=image_link, id="image_link")}}
+
+<!-- If the form template is loaded by edit view then show image-->
 {%   if pk_type_flag and pk_weakness_flag %}
 <div class="form-group row">
     <label for="image_link" class="col-sm-2 col-form-label">Image</label>
@@ -28,39 +28,18 @@
     </div>
 </div>
 {% endif %}
-<div class="form-group row">
-    <label for="description" class="col-sm-2 col-form-label">Description</label>
-    <div class="col-sm-10">
-        <input type="text" name="description" value="{{ description }}" class="form-control" id="description"
-               placeholder=""
-               required>
-    </div>
-</div>
-<div class="form-group row">
-    <label for="height" class="col-sm-2 col-form-label">Height</label>
-    <div class="col-sm-10">
-        <input type="text" name="height" value="{{ height }}" class="form-control" id="height" placeholder="">
-    </div>
-</div>
-<div class="form-group row">
-    <label for="weight" class="col-sm-2 col-form-label">Weight</label>
-    <div class="col-sm-10">
-        <input type="text" name="weight" value="{{ weight }}" class="form-control" id="weight" placeholder="">
-    </div>
-</div>
-<div class="form-group row">
-    <label for="category" class="col-sm-2 col-form-label">Category</label>
-    <div class="col-sm-10">
-        <input type="text" name="category" value="{{ category }}" class="form-control" id="category" placeholder="">
-    </div>
 
-</div>
-<div class="form-group row">
-    <label for="ability" class="col-sm-2 col-form-label">Ability</label>
-    <div class="col-sm-10">
-        <input type="text" name="ability" value="{{ abilities }}" class="form-control" id="ability" placeholder="">
-    </div>
-</div>
+<!-- Pokemon Description  -->
+{{ make_field(field=form.description, value=description, id="description") }}
+<!-- Pokemon Height -->
+{{ make_field(field=form.height, value=height, id="height") }}
+<!-- Pokemon Weight -->
+{{ make_field(field=form.weight, value=weight, id="weight") }}
+<!-- Pokemon Category -->
+{{ make_field(field=form.category, value=category, id="category") }}
+<!-- Pokemon Ability -->
+{{ make_field(field=form.ability, value=abilities, id="ability") }}
+
 
 <div class="form-group row">
     <label class="col-sm-2 col-form-label">Type</label>

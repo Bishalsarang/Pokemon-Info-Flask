@@ -1,5 +1,6 @@
 from __main__ import app, db
 from flask import render_template, redirect, url_for, abort, request
+from  forms import AddPokemonForm
 import models
 
 
@@ -97,6 +98,8 @@ def delete_pokemon():
 
 @app.route('/edit_pokemon', methods=["GET", "POST"])
 def edit_pokemon():
+    # Pass WTForm to edit template
+    form = AddPokemonForm()
     pokemon_types = ["fire", "water", "grass", "eletric", "psychic", "steel",
                      "normal", "fairy", "dark", "flying",
                      "ghost", "poison", "ice", "ground", "rock", "dragon",
@@ -149,7 +152,7 @@ def edit_pokemon():
                 if pokemon_type in queried_pk_weaknesses:
                     pk_weakness_flag[i] = 1
 
-            return render_template("edit_pokemon.html", name=name,
+            return render_template("edit_pokemon.html", form=form, name=name,
                                    pokemon_id=pokemon_id, image_link=image_link,
                                    description=description, height=height,
                                    weight=weight, category=category,
@@ -217,6 +220,7 @@ def edit_pokemon():
 
 @app.route('/add_pokemon', methods=["GET", "POST"])
 def add_pokemon():
+    form = AddPokemonForm()
     pokemon_types = ["fire", "water", "grass", "eletric", "psychic", "steel",
                      "normal", "fairy", "dark", "flying",
                      "ghost", "poison", "ice", "ground", "rock", "dragon",
@@ -261,7 +265,7 @@ def add_pokemon():
                                message=f"Requested {pokemon_id} doesn't exist")
 
     elif request.method == "GET":
-        return render_template("add_pokemon.html", pokemon_types=pokemon_types)
+        return render_template("add_pokemon.html", form=form, pokemon_types=pokemon_types)
     return f"Request method {request.method} not allowed"
 
 

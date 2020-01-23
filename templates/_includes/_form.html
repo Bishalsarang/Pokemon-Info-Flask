@@ -11,7 +11,7 @@
 {% endmacro %}
 
 <!-- CSRF Token -->
-{{ form.hidden_tag() }}
+{{ form.csrf_token }}
 <!-- Pokemon ID  -->
 {{ make_field(field=form.pokemon_id, value=pokemon_id, id="pokemon_id")}}
 <!-- Pokemon Name  -->

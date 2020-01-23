@@ -7,7 +7,7 @@ class Pokemon(db.Model):
     pokemon_id = db.Column(db.Integer, unique=True)
     name = db.Column(db.String(20), unique=True, nullable=False)
     description = db.Column(db.Text)
-    image_link = db.Column(db.String(20))
+    image_link = db.Column(db.VARCHAR(150))
     height = db.Column(db.String(20))
     category = db.Column(db.String(20))
     weight = db.Column(db.String(20))

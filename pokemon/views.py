@@ -1,7 +1,7 @@
-from __main__ import app, db
+from pokemon import app, db
 from flask import render_template, redirect, url_for, abort, request
-from  forms import AddPokemonForm
-import models
+from pokemon.forms import AddPokemonForm
+import pokemon.models as models
 
 
 @app.route('/')

@@ -5,6 +5,8 @@ I've tried implementing a simple MVT architecture by separating components into 
 - **models.py**: contains ORM for database schema
 - **views.py:** contains application logic i.e the response the apps returns
 - **./templates/**: contains Jinja html templates
+- **forms.py**: contains wtforms
+
 In addition to this, I've implemented **manage.py** file for common database migration commands and running server commands.
 For database, I have used SQlite. Instead of using raw SQL queries I have chosen to use SQLAlchemy to understand ORM database model.
 

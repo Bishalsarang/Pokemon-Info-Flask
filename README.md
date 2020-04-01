@@ -12,7 +12,7 @@ For database, I have used SQlite. Instead of using raw SQL queries I have chosen
 
 I've deployed the app on heroku. You can view the demo [here](https://flask-pokedox.herokuapp.com/)
 ## How to use:    
-- Clone this  [repository](https://github.com/Bishalsarang/Pokemon-Info-Flask-)  
+- Clone this  [repository](https://github.com/Bishalsarang/Pokemon-Info-Flask)  
  - Install all the requirements  
 `pip install -r requirement.txt`  
  - ##### DO this :If you want to start from fresh database delete **database.db** where db is the extension and start  type following commands on terminal<br>
@@ -23,7 +23,7 @@ I've deployed the app on heroku. You can view the demo [here](https://flask-poke
     `python manage.py run_server`
 
 ## Database Schema
-![enter image description here](https://github.com/Bishalsarang/Pokemon-Info-Flask-/blob/master/assets/database%20schema.png)
+![enter image description here](https://github.com/Bishalsarang/Pokemon-Info-Flask/blob/master/assets/database%20schema.png)
 
 ## Screenshots
-![enter image description here](https://github.com/Bishalsarang/Pokemon-Info-Flask-/blob/master/assets/sc.gif)
+![enter image description here](https://github.com/Bishalsarang/Pokemon-Info-Flask/blob/master/assets/sc.gif)
